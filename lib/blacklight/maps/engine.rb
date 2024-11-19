@@ -5,6 +5,7 @@ require 'blacklight'
 module Blacklight
   module Maps
     class Engine < Rails::Engine
+
       # Set some default configurations
       initializer 'blacklight-maps.default_config' do |_app|
         Blacklight::Configuration.default_values[:view].maps.geojson_field = 'geojson_ssim'
@@ -23,7 +24,9 @@ module Blacklight
 
       # Add our helpers
       initializer 'blacklight-maps.helpers' do |_app|
-        ActionView::Base.send :include, BlacklightMapsHelper
+        config.to_prepare do
+          ActionView::Base.send :include, ::BlacklightMapsHelper
+        end
       end
 
       # This makes our rake tasks visible.
